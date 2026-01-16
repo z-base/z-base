@@ -1,3 +1,5 @@
+# z-base/docs/specifications/wire_control/PROTOCOL.md
+
 ## Status
 
 This document defines the **z-base Wire Control Protocol (WCP)**.  
