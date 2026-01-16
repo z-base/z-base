@@ -2,11 +2,13 @@
 
 ## Abstract
 
-A **Base Station** is a non-authoritative infrastructure service responsible for authenticated connectivity, persistence of opaque Resource Snapshots, and relay of opaque Snapshot and Delta frames for exactly one Resource.
+A **Base Station** is a cloud-hosted, non-authoritative infrastructure service responsible for authenticated connectivity, persistence of opaque Resource Snapshots, and relay of opaque Snapshot and Delta frames for exactly one Resource.
 
-A Base Station has no semantic awareness and no authority over state correctness, authorization, attribution, merge logic, or lifecycle enforcement. It operates strictly as an opaque byte relay and persistence mechanism.
+A Base Station has **zero semantic awareness**, **no authority over state**, and **no application logic**. It verifies possession of Resource-bound cryptographic material, stores opaque snapshot blobs, and relays opaque blobs between verified peers.
 
-This document defines the **normative requirements** for Base Station implementations.
+All semantic interpretation, authorization, attribution, merge logic, revocation enforcement, and lifecycle semantics are performed exclusively by Actors.
+
+Every Resource **MUST** be served by exactly one logically isolated Base Station instance.
 
 ---
 
@@ -15,7 +17,7 @@ This document defines the **normative requirements** for Base Station implementa
 This document is a **Draft Specification**, version **1.0.0**, edited **16 January 2026**.  
 It is provided for review and experimentation and **MUST NOT** be considered stable or complete.
 
-Normative requirements and component boundaries may change without notice.
+Normative requirements and deployment constraints may change without notice.
 
 ---
 
@@ -33,91 +35,241 @@ Sections marked *Non-Normative* are informational and **do not affect conformanc
 
 ## Base Station Definition *(Normative)*
 
-A Base Station is a per-Resource infrastructure service that:
+A Base Station:
 
 - serves **exactly one Resource identifier**,  
 - verifies **possession** of Resource-bound cryptographic material,  
-- persists **opaque Resource Snapshots**, and  
-- relays **opaque Snapshot and Delta frames** between verified peers.
+- **persists opaque Snapshot frames**,  
+- **relays opaque Delta frames**, and  
+- **relays opaque Snapshot frames on verified request**.
 
 A Base Station **MUST NOT**:
 
 - interpret payload contents,  
 - validate or merge state,  
-- enforce authorization or role semantics,  
+- enforce authorization semantics,  
 - attribute identity,  
-- track acknowledgments, or  
-- enforce revocation or lifecycle rules.
+- track acknowledgments,  
+- implement revocation logic, or  
+- act as an Actor.
 
 ---
 
-## Resource Scope *(Normative)*
+## One-Resource-Per-Station *(Normative)*
 
-- Each Resource **MUST** be served by exactly one logically isolated Base Station.
-- All connections, frames, persistence, and peer sets **MUST** be scoped to that Resource.
-- Cross-Resource routing, persistence, or peer visibility is **non-conformant**.
+Each Resource **MUST** have its own logically isolated Base Station.
+
+- No cross-Resource persistence is permitted.  
+- No cross-Resource relay is permitted.  
+- No cross-Resource peer visibility is permitted.
+
+Isolation **MUST** hold under normal operation, overload, and partial failure.
 
 ---
 
-## Architectural Components *(Normative)*
+## Required Infrastructure Components *(Normative)*
 
-A conforming Base Station implementation **MUST** include a per-Resource stateful core component defined in:
+A conforming Base Station deployment **MUST** consist of the following **architecturally distinct components**.
+
+### 1. Stateless Edge Gateway
+
+The Stateless Edge Gateway:
+
+- **MUST** be highly available and stateless,  
+- **MUST** accept inbound connection requests,  
+- **MUST** route requests deterministically to the correct per-Resource Base Station instance,  
+- **MUST NOT** persist application state,  
+- **MUST NOT** upgrade connections to verified sessions,  
+- **MUST NOT** interpret payloads.
+
+The gateway exists solely for **routing, termination, and load distribution**.
+
+---
+
+### 2. Per-Resource Stateful Base Station Core
+
+The per-Resource Base Station Core:
+
+- **MUST** exist as a distinct execution unit per Resource,  
+- **MUST** perform protocol-defined verification gating,  
+- **MUST** upgrade connections to verified sessions,  
+- **MUST** maintain the verified peer set,  
+- **MUST** persist opaque Snapshots,  
+- **MUST** relay opaque Snapshot and Delta frames.
+
+The Base Station Core **MUST** conform to:
 
 - [Base Station Core — Component Specification](components/STATION.md)
 
-Additional infrastructure components (e.g. edge routing, traffic filtering) **MAY** exist but **MUST NOT** introduce application semantics or authority.
+---
+
+### 3. In-Memory Snapshot Cache
+
+While active, the Base Station Core:
+
+- **MUST** keep the latest persisted Snapshot resident in memory,  
+- **MUST NOT** interpret the Snapshot,  
+- **MUST** use the cached Snapshot to serve Snapshot relay.
 
 ---
 
-## Protocol Compliance *(Normative)*
+### 4. Durable Snapshot Storage
 
-A Base Station **MUST** implement all wire-level behavior exactly as defined in:
+On eviction, restart, or hibernation, the Base Station:
 
-- [Wire Control Protocol](../wire_control/PROTOCOL.md)
+- **MUST** persist the latest Snapshot to durable storage,  
+- **MUST** restore it into memory on reactivation,  
+- **MUST** treat storage contents as opaque.
 
-The Base Station **MUST NOT** extend, reinterpret, or weaken the protocol.
-
----
-
-## Snapshot Handling *(Normative)*
-
-- Snapshots received from verified clients **MUST** be treated as opaque byte sequences.
-- Only the **latest Snapshot** **MUST** be persisted.
-- Persisted Snapshots **MUST** survive restart, eviction, or hibernation.
-- Snapshot payloads **MUST NOT** be inspected, modified, or validated.
+Storage **MUST NOT** be used for indexing, inference, or correlation.
 
 ---
 
-## Delta Handling *(Normative)*
+## Connection Lifecycle *(Normative)*
 
-- Delta payloads **MUST NOT** be persisted.
-- Delta frames **MUST** be relayed to all verified peers except the sender.
-- Delivery **MAY** be duplicated, reordered, or lossy.
+### Pre-Upgrade Verification
+
+Before upgrading to a verified session, the Base Station **MUST**:
+
+- require proof of possession of Resource-bound cryptographic material,  
+- verify the proof without semantic inspection,  
+- reject the connection on failure.
+
+Unverified connections **MUST NOT** send or receive Snapshot or Delta frames.
+
+---
+
+### Verified Session
+
+Once verified, a connection:
+
+- **MUST** be added to the verified peer set,  
+- **MAY** submit Snapshot frames,  
+- **MAY** submit Delta frames,  
+- **MAY** request Snapshot relay,  
+- **MAY** receive relayed frames.
+
+Verification **MUST NOT** be treated as identity attribution or authorization.
+
+---
+
+### Connection Closure
+
+On disconnect, the connection **MUST** be removed from the verified peer set.
+
+No semantic inference or cleanup beyond removal is permitted.
+
+---
+
+## Frame Classes *(Normative)*
+
+### Snapshot Frames
+
+- Encrypted, opaque full Resource state.  
+- **MUST** be persisted.  
+- **MUST** be relayed on verified request.  
+- **MAY** be relayed automatically after verification.
+
+---
+
+### Delta Frames
+
+- Encrypted, opaque incremental updates.  
+- **MUST NOT** be persisted.  
+- **MUST** be relayed to verified peers.
+
+---
+
+## Relay Semantics *(Normative)*
+
+### Delta Relay
+
+For each Delta frame, the Base Station **MUST**:
+
+- relay to all verified peers except the sender,  
+- allow unordered, duplicated, or lossy delivery.
+
+---
+
+### Snapshot Relay
+
+Upon Snapshot request from a verified peer, the Base Station **MUST**:
+
+- relay the latest persisted Snapshot,  
+- preserve payload bytes exactly,  
+- perform no validation or synthesis.
+
+Snapshot relay **DOES NOT** replace persistence.
+
+---
+
+## Host Environment Requirements *(Normative)*
+
+A Base Station **MUST** be deployed in a compliant host environment that enforces baseline protections **before traffic reaches the Stateless Edge Gateway**.
+
+These controls protect infrastructure availability and **MUST NOT** introduce application semantics.
+
+### Pre-Gateway Traffic Filtering
+
+The host environment **MUST**:
+
+- enforce rate and burst limits,  
+- enforce connection limits,  
+- reject malformed or non-conforming protocol requests,  
+- drop traffic failing basic transport integrity checks.
+
+---
+
+### Protocol Shape Validation
+
+The host environment **MUST** validate only **wire-level protocol shape**, including:
+
+- framing correctness,  
+- declared frame-type validity,  
+- size and bounds limits.
+
+The host environment **MUST NOT** inspect encrypted payload contents.
+
+---
+
+### Abuse and Trash Traffic Mitigation
+
+The host environment **MUST** mitigate:
+
+- flooding and amplification attempts,  
+- repeated failed verification attempts,  
+- malformed or abusive handshake patterns.
+
+Mitigation **MAY** include throttling or temporary blocking without semantic interpretation.
+
+---
+
+### Isolation and Blast Radius Control
+
+The host environment **MUST** ensure:
+
+- isolation between Resources,  
+- isolation between verified and unverified traffic paths,  
+- that overload or failure of one Resource **MUST NOT** cascade to others.
+
+---
+
+### Logging Constraints
+
+The host environment **MAY** log connection metadata and security events but **MUST NOT** log Snapshot or Delta payloads or derived meaning.
 
 ---
 
 ## Failure Model *(Normative)*
 
-A Base Station **MUST** tolerate:
+The Base Station **MUST** tolerate:
 
 - restarts and hibernation,  
-- connection churn,  
 - duplicate frames,  
-- partial relay and reordering.
+- partial relay,  
+- connection churn.
 
 Correctness is preserved because the Base Station is non-authoritative.
-
----
-
-## Security and Isolation *(Normative)*
-
-A Base Station **MUST** ensure:
-
-- isolation between Resources,  
-- isolation between verified and unverified connections, and  
-- that overload or failure of one Resource **MUST NOT** cascade to others.
-
-A Base Station **MUST NOT** log Snapshot or Delta payloads or derive semantic meaning from identifiers or payloads.
 
 ---
 
@@ -127,15 +279,25 @@ A Base Station **MUST NOT**:
 
 - merge CRDTs,  
 - enforce ACLs or roles,  
-- implement acknowledgment tracking,  
-- implement revocation logic, or  
-- act as a source of truth.
+- track acknowledgments,  
+- implement revocation logic,  
+- infer meaning.
 
 Any such behavior is **non-conformant**.
 
 ---
 
+## Cross-References
+
+- [Base Station Core — Component Specification](components/STATION.md)
+- [Wire Control Protocol](../wire_control/PROTOCOL.md)
+
+---
+
 ## Closing Principle *(Non-Normative)*
 
-The Base Station provides persistence and relay only.  
-All semantic authority resides with Actors.
+The Base Station persists Snapshots.  
+The Base Station relays Deltas.  
+The Base Station understands none of it.
+
+Infrastructure only. Authority elsewhere.
