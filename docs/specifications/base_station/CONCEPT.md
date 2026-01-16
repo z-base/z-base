@@ -166,6 +166,56 @@ Snapshot relay **DOES NOT** replace persistence.
 
 ---
 
+## Host Environment Requirements *(Normative)*
+
+A Base Station **MUST** be deployed in a **compliant host environment** that enforces baseline web-application and network-level protections *before traffic reaches the Stateless Edge Gateway*. These controls exist to protect infrastructure availability and **MUST NOT** introduce application semantics.
+
+### Pre-Gateway Traffic Filtering
+
+The host environment **MUST**:
+
+- enforce rate limits and burst controls per source,
+- enforce connection limits,
+- reject malformed or non-conforming protocol requests,
+- drop traffic failing basic transport integrity checks (e.g. TLS).
+
+### Protocol Shape Validation
+
+The host environment **MUST** validate only **wire-level protocol shape**, including:
+
+- framing correctness,
+- declared frame-type validity,
+- size and bounds limits,
+- syntactic structure required for routing.
+
+The host environment **MUST NOT** inspect encrypted payload contents or infer semantic meaning.
+
+### Abuse and Trash Traffic Mitigation
+
+The host environment **MUST** mitigate:
+
+- flooding and amplification attempts,
+- repeated failed verification attempts,
+- protocol misuse and malformed handshakes.
+
+Mitigation **MAY** include throttling, temporary blocking, or challenge escalation, without semantic interpretation.
+
+### Isolation and Blast Radius Control
+
+The host environment **MUST** ensure:
+
+- isolation between Base Stations of different Resources,
+- isolation between verified and unverified traffic paths,
+- that overload or failure of one Resource **MUST NOT** cascade to others.
+
+### Logging Constraints
+
+The host environment **MAY** log connection metadata and security events but **MUST NOT** log Snapshot or Delta payloads or derived meaning.
+
+A deployment **MUST NOT** claim Base Station compliance unless these host requirements are met.
+
+---
+
 ## Failure Model *(Normative)*
 
 The Base Station **MUST** tolerate:
