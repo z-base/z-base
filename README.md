@@ -102,7 +102,8 @@ Base Stations **MUST NOT** enforce state rules, resolve conflicts, or reject dat
 Resource access **MUST** be capability-based. Possession of a valid Resource identifier and corresponding cryptographic material is sufficient to attempt access.  
 Base Stations **MUST** require protocol-defined authentication steps but **MUST NOT** gain knowledge of Resource semantics as a result.
 
-Resources **MAY** reference other Resources only by identifier. Any such relationships **MUST** be interpreted solely by Actors and remain opaque to Base Stations.
+Resource Snapshots **MAY** contain application-defined semantic structures (including aliases, labels, or navigation data) that reference other Resources by identifier.
+These semantics **MUST** be visible only to Actors after decryption and **MUST NOT** be observable, derivable, or enforceable by Base Stations.
 
 ## Actor Roles and Authorization Model *(Normative)*
 
