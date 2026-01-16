@@ -1,1 +1,2 @@
-
+# Actor — Concept Specification
+## Abstract
