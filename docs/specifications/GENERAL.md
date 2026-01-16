@@ -276,3 +276,104 @@ This specification does not mandate specific cryptographic algorithms.
 Implementations **MUST** use authenticated encryption schemes suitable for long-term confidentiality and integrity.
 
 Algorithm selection **MAY** evolve without changing Resource or Snapshot semantics.
+
+## Actor Credential Discovery Model *(Non-Normative)*
+
+This section describes the **intended mental model** for how Actors discover and regain access to their identities, Resources, and cryptographic material. It is descriptive, not prescriptive, and exists to guide implementations toward interoperable and user-friendly designs.
+
+### Motivation
+
+A core goal of z-base is to make **actor identity and access durable, discoverable, and verifiable on the client side**, even in the absence of network connectivity.
+
+An Actor must be able to:
+- rediscover its own identity after reload, restart, or device migration,
+- prove access to Resources before receiving encrypted state,
+- decrypt locally cached or remotely restored Envelopes,
+- participate in peer verification without relying on a central authority.
+
+To achieve this, z-base assumes the existence of **client-side discoverable credentials** that bind together:
+- a stable, high-entropy opaque identifier,
+- cryptographic material for signing and verification,
+- cryptographic material for symmetric encryption and decryption.
+
+### Conceptual Model
+
+From the Actor’s perspective, a credential is a **local capability** rather than an account in the traditional server-managed sense.
+
+At a high level:
+
+1. An Actor discovers a locally available credential using platform-provided facilities.
+2. That credential yields or derives:
+   - an opaque identifier,
+   - signing or verification capability,
+   - encryption and decryption capability.
+3. The opaque identifier is used to locate Resources or accounts via a Base Station.
+4. Proof of key possession is used to authenticate access before any encrypted state is delivered.
+5. Encrypted Envelopes are decrypted locally and merged into authoritative state.
+
+The Base Station observes only opaque identifiers and proof-of-possession signals.  
+It never gains access to plaintext identity data, encryption keys, or application semantics.
+
+### Offline-First Identity
+
+Credential discovery is expected to work **without network access**.
+
+An Actor should be able to:
+- restore identity after a restart,
+- access locally cached Envelopes,
+- decrypt and use Resource state,
+- continue producing operations offline.
+
+Network connectivity is only required to synchronize state or communicate with peers, not to establish identity.
+
+### Accounts as Resources
+
+In many applications, an “account” is itself modeled as a **Resource**:
+- identified by a high-entropy opaque identifier,
+- encrypted and stored like any other Resource,
+- discoverable only through possession of the corresponding credential.
+
+This allows:
+- account recovery without revealing identity to the service provider,
+- multiple accounts per user agent,
+- organizational or shared identities implemented as shared Resources.
+
+From the Base Station’s perspective, accounts are indistinguishable from any other encrypted object.
+
+### Proof of Access Before Disclosure
+
+Before delivering encrypted state or enabling real-time forwarding, a Base Station typically requires the Actor to **prove access to cryptographic material associated with a Resource identifier**.
+
+This proof:
+- does not reveal plaintext state,
+- does not require long-lived sessions,
+- exists solely to filter unauthenticated traffic.
+
+The exact proof mechanism is left to implementations.
+
+### Peer Discovery and Sharing *(Informative)*
+
+Sharing access to a Resource between Actors typically occurs out-of-band:
+- direct messaging,
+- QR codes or links,
+- trusted social or organizational channels.
+
+Once identifiers and key material are exchanged, peers can independently:
+- verify each other’s operations,
+- merge state,
+- synchronize via Base Stations without further trust assumptions.
+
+### Non-Goals
+
+This model intentionally does **not** attempt to:
+- define a global identity namespace,
+- replace decentralized identity (DID) methods,
+- standardize key backup or cross-platform synchronization,
+- mandate a specific browser or operating system API.
+
+Those concerns are left to higher layers or future specifications.
+
+---
+
+This model exists to make **client-side discoverability of identity and keys the default**, enabling zero-knowledge storage, peer verifiability, and ethical data ownership without sacrificing usability.
+
