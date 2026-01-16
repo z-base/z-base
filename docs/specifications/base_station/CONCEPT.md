@@ -2,198 +2,204 @@
 
 ## Abstract
 
-A **Base Station** is a non-authoritative infrastructure service that persists, routes, and relays opaque state data between Actors without interpreting, validating, or enforcing semantic meaning. A Base Station **MUST treat all state as opaque bytes** and never participate in authorization, attribution, causal ordering, merge logic, or conflict resolution. It exists to provide *transport, persistence, and opportunistic delivery* across online and offline environments while preserving confidentiality, integrity, and relay fidelity.
+A **Base Station** is a cloud-hosted, non-authoritative infrastructure service responsible for authenticated connectivity, **persistence of opaque Resource Snapshots**, and **relay of opaque Delta and Snapshot frames** for exactly one Resource. A Base Station has **zero semantic awareness**, **no local authority**, and **no application logic**. It verifies possession of Resource-bound cryptographic material, stores meaningless snapshot blobs, and relays meaningless blobs between verified peers.
 
-Base Stations are protocol entities: they define how bytes move, not what they mean. All semantics reside in Actors. This specification defines the normative requirements for Base Station implementations that interoperate with Actor systems such as z-base.
-
----
-
-## Status of This Document
-
-This document is a **Draft Specification** for the **Base Station Concept**, version **1.0.0**, edited on **16 January 2026**.  
-It is provided for review and experimentation and **must not be considered stable or complete**.
+Every Resource **MUST** be served by exactly one logically isolated Base Station instance.
 
 ---
 
 ## Conformance
 
-An implementation **conforms** if and only if it satisfies all **normative** requirements defined herein.
+An implementation **conforms** iff it satisfies all **normative** requirements herein.
 
-The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHOULD**, **SHOULD NOT**, and **MAY** are to be interpreted per RFC 2119 and RFC 8174.
-
-Sections marked *Non-Normative* are informational and **do not affect conformance**.
+RFC 2119 / 8174 keywords apply.
 
 ---
 
 ## Base Station Definition *(Normative)*
 
-A **Base Station** is a service that:
+A **Base Station**:
 
-- accepts and stores opaque binary data,
-- relays that data between verified clients,
-- enables opportunity delivery (store-and-forward),
-- supports online (persistent network) and offline (local broadcast) modes,
-- provides authenticated session boundaries but has no access to state semantics.
-
-A Base Station **MUST** treat payloads as **opaque bytes** and **MUST NOT** decode, inspect, interpret, validate, or mutate them. It is strictly untrusted with respect to application meaning.
-
-This constraint **MUST** be reflected in all components and behaviors.
-
----
-
-## Authority Boundary *(Normative)*
-
-### Inside Boundary (Base Station Authority)
-
-The Base Station is authoritative only for:
-
-- authenticated session state and routing,
-- persistence of stored opaque bytes,
-- delivery guarantees (best-effort store-and-forward, retry semantics),
-- transport framing and session handshake.
-
-### Outside Boundary (Untrusted Semantics)
-
-The Base Station **MUST NOT** interpret:
-
-- semantic structure of payload bytes,
-- identity or role information within payloads,
-- merge rules for state,
-- causality, operation history, or validation effects.
-
-All semantic authority resides in Actors.
-
----
-
-## Security Guarantee *(Normative)*
-
-A Base Station **MUST**:
-
-- enforce authentication before accepting relay payloads,
-- require proof of possession of cryptographic material for a channel,
-- ensure transport encryption for all stateful interactions,
-- never retain plaintext beyond authenticated session context.
-
-It **MUST NOT** derive semantic meaning from payloads.  
-It **MUST NOT** enforce or interpret authorization semantics.
-
----
-
-## Base Station Sessions *(Normative)*
-
-### Handshake
-
-A Base Station **MUST** establish an authenticated session with a peer via a cryptographic handshake (e.g., HMAC challenge–response) before accepting relay traffic. Unauthenticated messages **MUST** be rejected.
-
-### Relay Domain
-
-The Base Station **MUST** partition traffic by Resource or namespace so that routing, storage, and forwarding occur only between verified peers for that domain.
-
----
-
-## Opaque Payload Handling *(Normative)*
-
-All stateful payloads **MUST** be treated as encrypted, opaque blobs.
-
-- The Base Station **MUST** store and forward these blobs **without decoding**.  
-- The Base Station **MUST** preserve all bits and ordering of the binary payload.  
-- The Base Station **MUST** be able to route based on minimal framing metadata (e.g., a one-byte code) but **MUST NOT** require decoding. :contentReference[oaicite:1]{index=1}
-
----
-
-## Transport & Relay Semantics *(Normative)*
-
-A Base Station **MUST**:
-
-- relay encrypted payloads between verified clients in both **online** and **offline** modes,
-- support **fan-out** (forward to all relevant peers except origin),
-- isolate channels per verified Resource or namespace,
-- allow optionally storing replicas for opportunistic delivery.
-
-Base Stations **MUST NOT** participate in conflict resolution, causal ordering, or merge semantics.
-
----
-
-## Persistence & Store-and-Forward *(Normative)*
-
-Persistence in a Base Station **MUST** be:
-
-- opaque, unparsed binary,
-- stored under authenticated session context,
-- retrievable by clients upon verified request,
-- subject to capacity and retention policies defined by the station.
-
-Base Stations **MAY** delete or evict stored payloads per local retention policies but **MUST NOT** interpret contents.
-
----
-
-## Offline & Local Relay *(Normative)*
-
-A Base Station **MUST** provide relay semantics for offline contexts via local transports (e.g., BroadcastChannel) using identical wire formats. Offline relay **MUST NOT** require the handshake step but **MUST** preserve encryption invariants.
-
----
-
-## Component Model *(Normative)*
-
-A conforming Base Station **MUST** be decomposable into the following components:
-
-- **Session & Authentication Manager**  
-  Establishes and tracks verified peer sessions.
-
-- **Opaque Storage Layer**  
-  Stores binary state without decoding; supports persistence and eviction.
-
-- **Transport Relay Engine**  
-  Routes and forwards opaque bytes between peers; supports both online and local offline transports.
-
-- **Resource Namespace Manager**  
-  Segregates relay domains by Resource or logical namespace.
-
-- **Framing & Routing Logic**  
-  Routes based on minimal framing metadata without interpreting payloads.
-
-- **Security & TLS Layer**  
-  Enforces encryption, authentication, and transport integrity.
-
-Additional components **MAY** exist but **MUST NOT** derive semantic meaning.
-
----
-
-## Failure & Delivery Guarantees *(Normative)*
-
-A Base Station **MUST**:
-
-- tolerate partial network failures,
-- retry best-effort delivery,
-- not buffer content in a way that induces semantic interpretation,
-- provide last-write-lossy or store-and-forward semantics as configured.
-
-It **MUST** not make semantic guarantees about convergence or ordering.
-
----
-
-## Non-Goals *(Normative)*
+- serves **exactly one Resource identifier**,
+- verifies possession of Resource-related cryptographic material,
+- **persists Snapshot frames**,
+- **relays Delta frames**, and
+- **relays Snapshot frames on verified request**.
 
 A Base Station **MUST NOT**:
 
-- decode encrypted payloads,
-- validate or enforce application semantics,
-- merge or apply CRDT logic,
-- act as an authority for state decisions.
-
-All such authority resides in Actors.
+- interpret payloads,
+- validate or merge state,
+- enforce authorization semantics,
+- attribute identity,
+- act as an Actor.
 
 ---
 
-## Security Posture *(Non-Normative)*
+## One-Resource-Per-Station *(Normative)*
 
-The Base Station is designed to minimize trust in infrastructure: state is opaque, semantics are local, and transport security is orthogonal to application logic.
+Each Resource **MUST** have its own logically isolated Base Station.
+
+No cross-Resource persistence, relay, or peer sets are permitted.
+
+---
+
+## Required Infrastructure Components *(Normative)*
+
+### 1. Stateless Edge Gateway
+
+The gateway:
+
+- **MUST** be highly available and stateless,
+- **MUST** accept inbound connection requests,
+- **MUST** route requests deterministically to the correct per-Resource Base Station,
+- **MUST NOT** persist state,
+- **MUST NOT** upgrade connections to verified sessions.
+
+---
+
+### 2. Per-Resource Stateful Base Station Core
+
+The Base Station core:
+
+- **MUST** exist per Resource,
+- **MUST** perform WebSocket upgrade,
+- **MUST** verify possession of Resource-bound cryptographic material **before** verification,
+- **MUST** maintain the verified connection set,
+- **MUST** persist Snapshots,
+- **MUST** relay Deltas and Snapshots.
+
+---
+
+### 3. In-Memory Snapshot Cache
+
+The Base Station:
+
+- **MUST** keep the **latest persisted Snapshot** resident in memory while active,
+- **MUST NOT** interpret it,
+- **MUST** use it to serve Snapshot relay and retrieval.
+
+---
+
+### 4. Durable Snapshot Storage
+
+On hibernation, eviction, or restart the Base Station:
+
+- **MUST** persist the latest Snapshot to durable filesystem / object / blob storage,
+- **MUST** restore it into memory on reactivation,
+- **MUST** treat storage as opaque.
+
+---
+
+## Connection Lifecycle *(Normative)*
+
+### Pre-Upgrade Verification
+
+Before upgrading to a verified WebSocket session, the Base Station **MUST**:
+
+- require proof of possession of Resource-bound cryptographic material,
+- verify the proof without semantic inspection,
+- reject the connection on failure.
+
+Unverified connections **MUST NOT** send or receive frames.
+
+---
+
+### Verified Session
+
+Once verified, a connection:
+
+- **MUST** be added to the verified peer set,
+- **MAY** submit Snapshot frames,
+- **MAY** submit Delta frames,
+- **MAY** request Snapshot relay,
+- **MAY** receive relayed frames.
+
+---
+
+### Connection Closure
+
+On disconnect, the connection **MUST** be removed from the verified set.  
+No semantic inference is permitted.
+
+---
+
+## Frame Classes *(Normative)*
+
+### Snapshot Frames
+
+- Encrypted, opaque full Resource state.
+- **MUST** be persisted.
+- **MUST** be relayed **on explicit request by a verified peer**.
+- **MAY** be relayed for initial synchronization.
+
+---
+
+### Delta Frames
+
+- Encrypted, opaque incremental updates.
+- **MUST NOT** be persisted.
+- **MUST** be relayed.
+
+---
+
+## Relay Semantics *(Normative)*
+
+### Delta Relay
+
+For each Delta frame, the Base Station **MUST**:
+
+- relay to **all verified peers except the sender**,
+- allow unordered, duplicated, or lossy delivery.
+
+---
+
+### Snapshot Relay *(Mandatory on Request)*
+
+Upon receiving a Snapshot relay request from a verified peer, the Base Station **MUST**:
+
+- relay the **latest persisted Snapshot**,
+- treat the Snapshot as opaque,
+- **MUST NOT** synthesize, modify, or validate it.
+
+Snapshot relay **DOES NOT** replace persistence.
+
+---
+
+## Failure Model *(Normative)*
+
+The Base Station **MUST** tolerate:
+
+- restarts and hibernation,
+- duplicate frames,
+- partial relay,
+- connection churn.
+
+Correctness is preserved because the Base Station is non-authoritative.
+
+---
+
+## Explicit Non-Goals *(Normative)*
+
+A Base Station **MUST NOT**:
+
+- merge CRDTs,
+- enforce ACLs or roles,
+- track acknowledgments,
+- implement revocation logic,
+- infer meaning.
+
+Any such behavior is **non-conformant**.
 
 ---
 
 ## Closing Principle *(Non-Normative)*
 
-A Base Station moves bytes, not meaning.  
-It enables delivery, persistence, and opportunistic relay—nothing more.
+A Base Station:
 
----
+- persists **Snapshots**,
+- relays **Deltas**,
+- relays **Snapshots on verified request**,
+- understands **none of it**.
+
+Infrastructure only. Authority elsewhere.
