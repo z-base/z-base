@@ -29,11 +29,11 @@ An implementation conforms **iff** it satisfies all **normative** requirements d
 
 The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHOULD**, **SHOULD NOT**, and **MAY** are to be interpreted as described in RFC 2119 and RFC 8174.
 
-Sections marked *Non-Normative* are informational and **do not affect conformance**.
+Sections marked _Non-Normative_ are informational and **do not affect conformance**.
 
 ---
 
-## Actor Definition *(Normative)*
+## Actor Definition _(Normative)_
 
 An Actor is a software agent executing in a user-controlled environment that is **authoritative over state**.
 
@@ -53,36 +53,36 @@ An Actor **MUST NOT** delegate semantic interpretation, authorization, attributi
 
 ---
 
-## Authority Boundary *(Normative)*
+## Authority Boundary _(Normative)_
 
 The Actor defines a strict authority boundary.
 
 ### Inside the Boundary (Trusted)
 
-- schema interpretation and default state construction  
-- state validation and authorization  
-- cryptographic verification  
-- role and capability enforcement  
-- causal ordering and merge semantics  
-- asynchronous event emission  
-- acknowledgment logic  
-- revocation detection and enforcement  
-- garbage collection decisions  
+- schema interpretation and default state construction
+- state validation and authorization
+- cryptographic verification
+- role and capability enforcement
+- causal ordering and merge semantics
+- asynchronous event emission
+- acknowledgment logic
+- revocation detection and enforcement
+- garbage collection decisions
 
 ### Outside the Boundary (Untrusted)
 
-- storage  
-- transport  
-- ordering  
-- availability  
-- durability  
-- peers  
+- storage
+- transport
+- ordering
+- availability
+- durability
+- peers
 
 All externally supplied data **MUST** be treated as hostile until fully verified.
 
 ---
 
-## Actor Identity *(Normative)*
+## Actor Identity _(Normative)_
 
 ### Actor Identity Key
 
@@ -90,9 +90,9 @@ Each Actor **MUST** possess a persistent **Actor Identity Key** pair.
 
 The identity key:
 
-- **MUST** uniquely identify a single Actor instance,  
-- **MUST NOT** be shared across Actors,  
-- **MUST** be used for attribution and acknowledgment signing,  
+- **MUST** uniquely identify a single Actor instance,
+- **MUST NOT** be shared across Actors,
+- **MUST** be used for attribution and acknowledgment signing,
 - **MUST** be independent from authorization or role keys.
 
 Loss or compromise of the identity key **MUST** be treated as loss of Actor continuity.
@@ -104,7 +104,7 @@ Identity persistence **MUST NOT** depend on network availability.
 
 ---
 
-## Asynchronous State Model *(Normative)*
+## Asynchronous State Model _(Normative)_
 
 ### Schema-Defined Default State
 
@@ -125,7 +125,7 @@ No consumer **MUST** be required to wait for full state availability.
 
 ---
 
-## Asynchronous Event Engine *(Normative)*
+## Asynchronous Event Engine _(Normative)_
 
 An Actor **MUST** include an asynchronous event engine governing how state changes are surfaced.
 
@@ -139,11 +139,11 @@ An Actor **MUST** include an asynchronous event engine governing how state chang
 
 An Actor **MUST** be able to emit at least:
 
-- **State Advancement Events** — authoritative state changes after merge  
-- **Operation Rejection Events** — invalid or unauthorized operations  
-- **Conflict or Correction Events** — causal reconciliation signals  
-- **Revocation Events** — role loss and enforced erasure  
-- **Error Events** — structural or cryptographic failures  
+- **State Advancement Events** — authoritative state changes after merge
+- **Operation Rejection Events** — invalid or unauthorized operations
+- **Conflict or Correction Events** — causal reconciliation signals
+- **Revocation Events** — role loss and enforced erasure
+- **Error Events** — structural or cryptographic failures
 
 ### Non-Blocking Guarantees
 
@@ -153,25 +153,26 @@ An Actor **MUST** be able to emit at least:
 
 ---
 
-## Internal Component Model *(Normative)*
+## Internal Component Model _(Normative)_
 
 An Actor implementation **MUST** be decomposable into the following distinguishable components:
 
-- Identity & Key Manager  
-- Credential & Capability Manager  
-- Offline Storage Engine  
-- Resource Manager  
-- Operation Engine  
-- Merge Engine  
-- Asynchronous Event Engine  
-- Revocation Monitor & Enforcer  
-- Acknowledgment Engine  
-- Garbage Collector / Compactor  
-- **Station Client**  
-- Peer & Local Broadcast Channel  
-- Synchronization Controller  
-- Cryptographic Envelope Engine  
-- Policy & Validation Layer  
+- discoverable-credentials
+- Identity & Key Manager
+- Credential & Capability Manager
+- Offline Storage Engine
+- Resource Manager
+- Operation Engine
+- Merge Engine
+- Asynchronous Event Engine
+- Revocation Monitor & Enforcer
+- Acknowledgment Engine
+- Garbage Collector / Compactor
+- **Station Client**
+- Peer & Local Broadcast Channel
+- Synchronization Controller
+- Cryptographic Envelope Engine
+- Policy & Validation Layer
 
 The Station Client component **MUST** conform to:
 
@@ -181,7 +182,7 @@ Additional components **MAY** exist but **MUST NOT** weaken Actor authority, asy
 
 ---
 
-## State Ownership *(Normative)*
+## State Ownership _(Normative)_
 
 An Actor **MUST** maintain its own local replica of all state it participates in.
 
@@ -192,7 +193,7 @@ Remote data **MAY** influence state only after validation and merge.
 
 ---
 
-## Synchronization Behavior *(Normative)*
+## Synchronization Behavior _(Normative)_
 
 Synchronization is opportunistic, unordered, lossy, and untrusted.
 
@@ -200,19 +201,19 @@ Actors **MUST** recover solely through replay and deterministic merge.
 
 ---
 
-## Revocation Enforcement *(Normative)*
+## Revocation Enforcement _(Normative)_
 
 Upon detecting revocation, an Actor **MUST** immediately and irreversibly erase all access and state for the affected Resource and emit a revocation event.
 
 ---
 
-## Failure Model *(Normative)*
+## Failure Model _(Normative)_
 
 Actors **MUST** tolerate crashes, restarts, partial state, duplication, malicious peers, and hostile infrastructure without authority escalation or silent corruption.
 
 ---
 
-## Closing Principle *(Non-Normative)*
+## Closing Principle _(Non-Normative)_
 
 An Actor is authoritative by construction.  
 Infrastructure provides transport, not truth.
