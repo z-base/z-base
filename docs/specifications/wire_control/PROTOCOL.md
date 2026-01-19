@@ -4,15 +4,14 @@
 
 This document defines the **z-base Wire Control Protocol (WCP)**.
 
-It specifies a **binary, versioned, role-aware wire protocol** governing how Actors and Base Stations exchange opaque byte sequences.
+WCP is a **binary, versioned, role-aware wire protocol** governing how Actors and Base Servers exchange **opaque byte sequences**.
 
-This protocol is **normative for wire behavior only**. It defines delivery obligations and structural validation rules and is **not authoritative over semantic meaning, state correctness, authorization, attribution, or lifecycle semantics**.
+This specification is **normative for wire behavior only**. It defines framing, delivery obligations, verification and configuration handshakes, resource bootstrap, identifier authority, and migration rules. It is **not authoritative over semantic meaning, authorization, merge logic, attribution, or lifecycle semantics**, which exist strictly above the wire.
 
 This document is the **single shared wire contract** referenced by:
 
-[- Base Station Core](../base_station/components/STATION.md)
-
-[- Actor Station Client](../actor/components/STATION_CLIENT.md)
+- [Base Station Core](../base_station/components/STATION.md)
+- [Actor Station Client](../actor/components/STATION_CLIENT.md)
 
 RFC 2119 and RFC 8174 keywords apply.
 
@@ -22,11 +21,11 @@ RFC 2119 and RFC 8174 keywords apply.
 
 The Wire Control Protocol is designed to:
 
-- support **fully asynchronous Actors** that may execute before, during, or after network connectivity,
-- allow **baseline state injection** without coordination or blocking,
-- preserve **semantic opacity** at the Base Station,
+- support **fully asynchronous Actors**, including offline-first execution,
+- allow **resource creation without prior coordination**,
+- preserve **semantic opacity** at the Base Server,
 - scale across Resources with strict isolation guarantees,
-- enable **mechanical protocol validation** without payload inspection,
+- enable **mechanical validation without payload inspection**,
 - remain forward-compatible without invalidating existing implementations.
 
 The protocol defines **how bytes move**, never **what they mean**.
@@ -37,17 +36,20 @@ The protocol defines **how bytes move**, never **what they mean**.
 
 - Payloads are opaque at all times.
 - Delivery may be duplicated, reordered, or lossy.
-- Verification gates byte exchange but does not define state lifecycle.
-- Authority, merge semantics, attribution, and correctness exist strictly above the wire.
-- Every connection is scoped to exactly one Resource.
+- **Pre-verification, the Client MUST NOT emit any frame other than the one explicitly required by the Server.**
+- **Verification gates all non-configuration byte exchange.**
+- **Resource existence and identifier allocation are Server-authoritative.**
+- All invalid or unexpected wire behavior **MUST result in connection termination**.
+- Authority, correctness, attribution, and merge semantics exist strictly above the wire.
+- Every connection is scoped to **exactly one Resource**.
 
 ---
 
 ## Transport Assumptions
 
-- A reliable, message-framed transport (e.g. WebSocket).
+- Reliable, message-framed transport (e.g. WebSocket).
 - Message boundaries are preserved.
-- Transport-level security (e.g. TLS) is assumed but not specified here.
+- Transport-level security (e.g. TLS) is assumed but not specified.
 
 ---
 
@@ -64,141 +66,160 @@ Every frame **MUST** use the following envelope:
 ### VERSION
 
 - Indicates the Wire Control Protocol version.
-- This specification defines **VERSION = 0x01**.
-- Frames with unknown VERSION values **MUST** be rejected.
+- This specification defines `VERSION = 0x01`.
+- Frames with unknown VERSION values **MUST** be rejected via connection termination.
 
 ### FRAME_CODE
 
 - Defines **wire-level obligation only**.
-- Determines which party may emit the frame and how the Base Station must process it.
+- Determines which party may emit the frame and how the Server must process it.
 - Payload interpretation is undefined at the wire level.
 
 ---
 
-## Frame Code Space Law *(Normative)*
+## Frame Code Space Law _(Normative)_
 
-Frame codes are allocated strictly by **emitter role** and **delivery obligation**.
+Frame codes are allocated strictly by **emitter role**.
 
-This allocation rule is mandatory and mechanically enforceable.
+| Range     | Class           | Emitted By | Obligation                        |
+| --------- | --------------- | ---------- | --------------------------------- |
+| 0x00–0x4F | Server Produced | Server     | Gating, verification, relay       |
+| 0x50–0xFF | Client Produced | Client     | Verification, configuration, data |
 
-| Range       | Class                     | Emitted By | Obligation |
-|------------|---------------------------|------------|------------|
-| 0x00–0x1F  | Station Control            | Station    | Verification and gating |
-| 0x20–0x3F  | Client Submission          | Client     | Persistence or relay |
-| 0x40–0x5F  | Station Relay / Offer      | Station    | Forwarding |
-| 0x60–0x7F  | Reserved                   | —          | Undefined |
-| 0x80–0xFF  | Forbidden                  | —          | Connection termination |
-
-Any violation of emitter role or frame code range **MUST** result in connection termination.
+Any violation of emitter role or frame code range **MUST** result in immediate connection termination.
 
 ---
 
 ## Defined Frame Codes (VERSION = 0x01)
 
-### Station Control Frames (0x00–0x1F)
+### Server Produced Frames (0x00–0x4F)
 
-| Code | Name            | Direction             | Description |
-|-----:|-----------------|-----------------------|-------------|
-| 0x01 | AssertChallenge | Station → Client      | Verification challenge |
-
----
-
-### Client Submission Frames (0x20–0x3F)
-
-| Code | Name            | Direction             | Persisted | Description |
-|-----:|-----------------|-----------------------|-----------|-------------|
-| 0x21 | ProvePossession | Client → Station      | No        | Proof of Resource-bound key possession |
-| 0x22 | SubmitSnapshot  | Client → Station      | Yes       | Persist opaque Snapshot |
-| 0x23 | SubmitDelta     | Client → Station      | No        | Submit opaque Delta |
-| 0x24 | RequestSnapshot | Client → Station      | No        | Request latest Snapshot |
+| Code | Name                 | Direction          | Description                                               |
+| ---- | -------------------- | ------------------ | --------------------------------------------------------- |
+| 0x00 | require-verification | Server → Client    | Verification required                                     |
+| 0x01 | require-config       | Server → Client    | Resource does not exist; configuration required           |
+| 0x02 | offer-config         | Server → Client    | Configuration accepted; authoritative identifier assigned |
+| 0x04 | offer-snapshot       | Server → Client    | Send persisted Snapshot                                   |
+| 0x05 | forward-delta        | Server → Client(s) | Forward Delta                                             |
+| 0x06 | forward-request      | Server → Client(s) | Snapshot request                                          |
+| 0x07 | forward-response     | Server → Client    | Requested Snapshot                                        |
 
 ---
 
-### Station Relay Frames (0x40–0x5F)
+### Client Produced Frames (0x50–0xFF)
 
-| Code | Name           | Direction               | Description |
-|-----:|----------------|--------------------------|-------------|
-| 0x41 | OfferSnapshot  | Station → Client(s)     | Send persisted Snapshot |
-| 0x42 | RelayDelta     | Station → Client(s)     | Relay Delta |
-
----
-
-## Connection Phases *(Normative)*
-
-### Phase 0 — Unverified
-
-Immediately after connection establishment:
-
-- The Station **MUST** send `AssertChallenge (0x01)`.
-- The Client **MUST NOT** send any frame other than `ProvePossession (0x21)`.
-
-Any other frame **MUST** cause immediate connection termination.
+| Code | Name                | Direction       | Persisted | Description                        |
+| ---- | ------------------- | --------------- | --------- | ---------------------------------- |
+| 0x50 | submit-verification | Client → Server | No        | Verification response payload      |
+| 0x51 | submit-config       | Client → Server | No        | Propose new Resource configuration |
+| 0x52 | submit-snapshot     | Client → Server | Yes       | Persist opaque Snapshot            |
+| 0x53 | submit-delta        | Client → Server | No        | Submit opaque Delta                |
+| 0x54 | submit-request      | Client → Server | No        | Request latest Snapshot            |
 
 ---
 
-### Phase 1 — Verification
+## Connection Phases _(Normative)_
 
-- The Client sends `ProvePossession (0x21)`.
-- The Station verifies possession without semantic inspection.
-- On failure, the connection **MUST** be closed.
-- On success, the connection transitions to **Verified**.
+### Phase 0 — Unverified (Handshake Gate)
+
+Immediately after connection establishment, the Server **MUST assert exactly one required handshake path**.
+
+At this phase:
+
+- The Client **MUST NOT** send any frame **unless explicitly required by the Server**.
+- The Client **MAY queue internal operations locally**, but **MUST NOT emit them on the wire**.
+- Any unsolicited or invalid frame **MUST** result in immediate connection termination.
 
 ---
 
-### Phase 2 — Verified Session
+### Phase 0A — Verification Required (Resource Exists)
 
-Upon successful verification:
+- The Server **MUST** send `require-verification (0x00)`.
+- The Client **MUST** respond with `submit-verification (0x50)`.
+- No other frames are permitted.
+
+---
+
+### Phase 0B — Configuration Required (Resource Does Not Exist)
+
+- The Server **MUST** send `require-config (0x01)`.
+- The Client **MUST** respond with `submit-config (0x51)`.
+- No verification, snapshot, or delta frames are permitted.
+
+---
+
+## Phase 1 — Configuration (Resource Bootstrap)
+
+Upon receiving `submit-config (0x51)`:
+
+1. The Server **MUST treat any client-provided identifier as advisory only**.
+2. The Server **MUST determine an authoritative identifier**.
+3. If the proposed identifier already exists, the Server **MUST generate a new 43-character, no-padding, high-entropy identifier**.
+4. Identifier generation **MUST repeat until uniqueness is confirmed**.
+5. The Server **MUST** persist:
+   - encrypted resource state under `${identifier}`,
+   - verification key under `${identifier}:jwk`.
+6. The verification key:
+   - **MUST NOT** unlock resource state,
+   - **MUST NOT** be a single point of failure,
+   - **MUST** function solely as a connection firewall.
+7. The Server **MUST** send `offer-config (0x02)` with the **authoritative identifier** in the payload.
+
+Any malformed configuration payload or protocol violation **MUST** result in immediate connection termination.
+
+---
+
+## Identifier Adoption and Migration _(Normative)_
+
+- The payload of `offer-config (0x02)` **MUST contain the authoritative Resource identifier**.
+- Upon receipt, the Client **MUST compare the received identifier with its current local identifier**.
+- If the identifiers differ, the Client **MUST migrate all local Resource state** to the new identifier.
+- Migration **MUST be atomic from the Client’s perspective**.
+- All subsequent behavior **MUST treat the adopted identifier as canonical**.
+- Any attempt to continue using a stale identifier on the wire **MUST** result in connection termination.
+
+---
+
+## Verified Session
+
+After successful verification:
 
 1. The connection is added to the verified peer set.
-2. If a Snapshot is persisted, the Station **MUST immediately send** `OfferSnapshot (0x41)`.
+2. If a Snapshot exists, the Server **MUST immediately send** `offer-snapshot (0x04)`.
 3. Delta relay **MAY** begin concurrently.
-
-No ordering guarantees exist between Snapshot offers and Delta relays.
+4. No ordering guarantees exist between snapshot delivery and delta relay.
 
 ---
 
-## Snapshot Rules *(Wire-Level)*
+## Snapshot Rules _(Wire-Level)_
 
-### SubmitSnapshot (0x22)
+### submit-snapshot (0x52)
 
 - Payload is an opaque Snapshot.
-- The Station **MUST** persist the payload verbatim.
+- The Server **MUST** persist verbatim.
 - Any previously persisted Snapshot **MUST** be replaced.
 - No inspection or validation is permitted.
 
----
+### offer-snapshot (0x04)
 
-### OfferSnapshot (0x41)
-
-- Sent automatically after verification if a Snapshot exists.
-- Sent in response to `RequestSnapshot (0x24)`.
-- Payload is the latest persisted Snapshot.
-- The Station **MUST NOT** wait for explicit request after verification.
+- Sent automatically after verification if available.
+- Sent in response to `submit-request (0x54)`.
 
 ---
 
-### RequestSnapshot (0x24)
+## Delta Rules _(Wire-Level)_
 
-- The Client **MAY** request a Snapshot at any time after verification.
-- The Station **MUST** respond with `OfferSnapshot (0x41)` if available.
+### submit-delta (0x53)
 
----
+- Payload is opaque.
+- The Server **MUST NOT** persist Delta payloads.
+- The Server **MUST** relay the payload to all verified peers except the sender.
 
-## Delta Rules *(Wire-Level)*
+### forward-delta (0x05)
 
-### SubmitDelta (0x23)
-
-- Payload is an opaque Delta.
-- The Station **MUST NOT** persist Delta payloads.
-- The Station **MUST** relay the payload to all verified peers except the sender.
-
----
-
-### RelayDelta (0x42)
-
-- Payload is forwarded verbatim.
+- Payload forwarded verbatim.
 - Delivery may be duplicated or reordered.
-- No acknowledgment or ordering guarantees are provided.
+- No acknowledgment guarantees are provided.
 
 ---
 
@@ -215,7 +236,7 @@ No ordering guarantees exist between Snapshot offers and Delta relays.
 The protocol tolerates:
 
 - connection churn,
-- Station restarts,
+- Server restarts,
 - duplicate frames,
 - reordering,
 - partial delivery.
@@ -228,15 +249,16 @@ Recovery is entirely Actor-side.
 
 An implementation conforms **iff** it:
 
-- enforces VERSION and frame code space law,
-- applies verification gating strictly,
-- offers persisted Snapshots immediately after verification,
-- preserves payload opacity and byte integrity,
-- obeys all relay and persistence obligations.
+- enforces VERSION and frame code space law exactly,
+- enforces strict pre-verification silence,
+- applies configuration and verification handshakes correctly,
+- enforces authoritative identifier adoption and migration,
+- terminates on all invalid wire behavior,
+- preserves payload opacity and byte integrity.
 
 ---
 
 ## Closing Statement
 
 This protocol defines **byte movement discipline only**.  
-All semantic authority exists above the wire.
+All semantic authority exists **above the wire**.
