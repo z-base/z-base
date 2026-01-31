@@ -8,7 +8,11 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "cf-typegen": "wrangler types"
   },
   "repository": {
     "type": "git",
@@ -22,9 +26,17 @@
     "url": "https://github.com/z-base/z-base/issues"
   },
   "homepage": "https://github.com/z-base/z-base#readme",
+  "dependencies": {
+    "chanfana": "^2.6.3",
+    "hono": "^4.6.20",
+    "zod": "^3.24.1"
+  },
   "devDependencies": {
     "esbuild": "^0.27.2",
     "playwright": "^1.57.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "@types/node": "22.13.0",
+    "@types/service-worker-mock": "^2.0.4",
+    "wrangler": "^4.59.2"
   }
 }
