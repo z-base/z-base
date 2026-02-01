@@ -1,0 +1,137 @@
+{
+  "extensions": [
+    {
+      "type": "description",
+      "target": "unspecified_intent",
+      "content": {
+        "text": "An *Unspecified Intent* event occurs when user interaction results in software gaining execution context within a *Service Boundary*. It signals a general desire to interact but does not imply consent, authorization, or disclosure unless an explicit and narrowly scoped contract is verifiably agreed upon."
+      }
+    },
+    {
+      "type": "description",
+      "target": "uncontrolled_environment",
+      "content": {
+        "text": "A state of *Uncontrolled Exposure* exists when software operating within a *Service Boundary* can access user data under conditions where the user cannot technically restrict observation, transmission, retention, or secondary use."
+      }
+    },
+    {
+      "type": "description",
+      "target": "service_provider",
+      "content": {
+        "text": "A *Service Provider* is an entity that operates compute environments and distributes interfaces through which *Service*s are offered. It provides availability and execution environments but does not define, own, or authorize user identity, state, or *Resource*s."
+      }
+    },
+    {
+      "type": "description",
+      "target": "service_boundary",
+      "content": {
+        "text": "A *Service Boundary* is an execution and trust domain that defines the maximum scope of visibility and authority a *Service Provider* may obtain. All data crossing this boundary must be considered untrusted unless explicitly authorized and cryptographically verifiable."
+      }
+    },
+    {
+      "type": "description",
+      "target": "actor_software",
+      "content": {
+        "text": "*Actor Software* executes within a *Service Boundary* and processes cryptographically verifiable user and collaborator intents. It is responsible for interpretation, merge logic, attribution, and state transitions without delegating semantic authority to infrastructure."
+      }
+    },
+    {
+      "type": "description",
+      "target": "offline_storage",
+      "content": {
+        "text": "*Offline Storage* is a user-accessible data store that holds encrypted state independent of external service availability. It does not interpret or authorize state."
+      }
+    },
+    {
+      "type": "description",
+      "target": "base_stations",
+      "content": {
+        "text": "A *Base Station* is a non-authoritative infrastructure component responsible for authenticated connectivity, persistence of opaque state, and relay of opaque state updates. It has no semantic awareness and performs no application logic."
+      }
+    },
+    {
+      "type": "description",
+      "target": "device_capability_discovery",
+      "content": {
+        "text": "A *Device Capability Discovery* event occurs when a previously established cryptographic capability becomes accessible within a *Service Boundary* following explicit user verification. Discovery exposes the ability to use the capability without transferring custody of the underlying secret."
+      }
+    },
+    {
+      "type": "description",
+      "target": "pds_credential_discovery",
+      "content": {
+        "text": "A *PDS Credential Discovery* event occurs when a valid *Device Capability* is used to locate and decrypt an opaque credential required to materialize a *Private Data Space*."
+      }
+    },
+    {
+      "type": "description",
+      "target": "device_capability_pairing",
+      "content": {
+        "text": "A *Device Capability Pairing* event establishes a relationship between a *Service Boundary* and a user-controlled cryptographic capability. Pairing registers the potential for future capability use but does not itself grant authority."
+      }
+    },
+    {
+      "type": "description",
+      "target": "pds_credential_enrollment",
+      "content": {
+        "text": "A *PDS Credential Enrollment* event occurs when newly generated or recovered credential material is encrypted under a valid *Device Capability* and persisted as opaque state for future retrieval."
+      }
+    },
+    {
+      "type": "description",
+      "target": "pds_credential_recovery",
+      "content": {
+        "text": "A *PDS Credential Recovery* flow enables reconstruction of credential material when previously associated capabilities are unavailable. Recovery results in credential material that must be re-bound to a valid *Device Capability* before use."
+      }
+    },
+    {
+      "type": "description",
+      "target": "device_capability_re-establishment",
+      "content": {
+        "text": "A *Device Capability Re-establishment* event occurs when recovered credential material is bound to a newly established *Device Capability*, restoring the ability to materialize a *Private Data Space*."
+      }
+    },
+    {
+      "type": "description",
+      "target": "private_data_space_(pds)",
+      "content": {
+        "text": "A *Private Data Space (PDS)* is a capability-gated state domain that exists within a *Service Boundary* only when valid credential material is used to decrypt and interpret user-controlled state. All meaning-bearing state originates and remains under user authority."
+      }
+    },
+    {
+      "type": "description",
+      "target": "identity_registry",
+      "content": {
+        "text": "An *Identity Registry* is a non-authoritative lookup surface for public identifiers and associated verification material. It enables discovery of public keys without conferring identity authority."
+      }
+    },
+    {
+      "type": "description",
+      "target": "identity_control_capability",
+      "content": {
+        "text": "An *Identity Control Capability* is a cryptographic capability confined to a *Private Data Space* that authorizes identity-related actions, including production of verifiable signatures and management of associated public identifiers."
+      }
+    },
+    {
+      "type": "description",
+      "target": "resource_control_capability",
+      "content": {
+        "text": "A *Resource Control Capability* is a cryptographic capability that authorizes operations on a specific *Resource*. It scopes authority to that resource and does not grant access beyond its defined domain."
+      }
+    },
+    {
+      "type": "description",
+      "target": "services",
+      "content": {
+        "text": "*Service*s are user-opted automation contracts offered within a *Service Boundary*. They operate only on explicitly submitted and authorized data and retain custody solely for the duration of the declared workflow."
+      }
+    },
+    {
+      "type": "description",
+      "target": "authorized_exchange",
+      "content": {
+        "text": "*Authorized Exchange* defines a protocol by which two independent *Service Boundaries* exchange explicitly authorized data without sharing secrets or transferring custody. All exchanges are capability-scoped, verifiable, and non-persistent beyond the declared interaction."
+      }
+    }
+  ]
+}

@@ -1,0 +1,305 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.6">
+  <diagram name="Sivu-1" id="fVc572ZC-CAz_29udLIQ">
+    <mxGraphModel dx="1733" dy="1039" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NBpONYlxt5W741VdVmP8-299" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="582" width="1080" x="45" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MkGWEybXNXGt3STZvfZy-3" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="MkGWEybXNXGt3STZvfZy-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="MkGWEybXNXGt3STZvfZy-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MkGWEybXNXGt3STZvfZy-1" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFCCCC;" value="Unspecified Intent" vertex="1">
+          <mxGeometry height="36" width="120" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-5" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="MkGWEybXNXGt3STZvfZy-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="NBpONYlxt5W741VdVmP8-2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-7" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="MkGWEybXNXGt3STZvfZy-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="82" />
+              <mxPoint x="460" y="148" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-9" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="MkGWEybXNXGt3STZvfZy-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="82" />
+              <mxPoint x="460" y="218" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-40" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="MkGWEybXNXGt3STZvfZy-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="NBpONYlxt5W741VdVmP8-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="220" y="257" />
+              <mxPoint x="545" y="257" />
+            </Array>
+            <mxPoint x="570" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MkGWEybXNXGt3STZvfZy-2" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF0000;" value="Uncontrolled Exposure" vertex="1">
+          <mxGeometry height="36" width="120" x="160" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-11" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-2" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" value="Device Capability Discovery" vertex="1">
+          <mxGeometry height="36" width="120" x="480" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-3" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99CCFF;" value="Offline Storage" vertex="1">
+          <mxGeometry height="36" width="120" x="320" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-13" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-6" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" value="Device Capability Pairing" vertex="1">
+          <mxGeometry height="36" width="120" x="480" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-15" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-8" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" value="PDS Credential Recovery" vertex="1">
+          <mxGeometry height="36" width="120" x="480" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-18" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-10" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99FF99;" value="PDS Credential Discovery" vertex="1">
+          <mxGeometry height="36" width="120" x="640" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-12" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99FF99;" value="PDS Credential Discovery" vertex="1">
+          <mxGeometry height="36" width="120" x="640" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-20" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-14" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99FF99;" value="Device Capability Re-establishment" vertex="1">
+          <mxGeometry height="36" width="120" x="640" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-16" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99CCFF;" value="Base Stations" vertex="1">
+          <mxGeometry height="36" width="120" x="320" y="287" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-44" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-45" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-46">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="859.9999999999995" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-17" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#00FF00;" value="Private Data Space (PDS)" vertex="1">
+          <mxGeometry height="36" width="120" x="800" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-25" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-26" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-23" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF3333;" value="Service Provider" vertex="1">
+          <mxGeometry height="36" width="120" x="485" y="287" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-24" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFB570;" value="Services" vertex="1">
+          <mxGeometry height="36" width="120" x="640" y="287" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-48" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-49" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" target="NBpONYlxt5W741VdVmP8-46">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="960" y="297" />
+              <mxPoint x="860" y="297" />
+            </Array>
+            <mxPoint x="960" y="290" as="sourcePoint" />
+            <mxPoint x="860" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-82" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" target="NBpONYlxt5W741VdVmP8-77">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="860" y="314" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-27" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFF00;" value="Identity Registry" vertex="1">
+          <mxGeometry height="36" width="120" x="960" y="287" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-34" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-37" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-2" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="82" />
+            </Array>
+            <mxPoint x="220" y="400" as="sourcePoint" />
+            <mxPoint x="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-37" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99CCFF;" value="Actor Software" vertex="1">
+          <mxGeometry height="36" width="120" x="320" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-47" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-43" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#00FF00;" value="Identity Control Capability" vertex="1">
+          <mxGeometry height="36" width="120" x="960" y="64" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-46" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#00FF00;" value="Resources" vertex="1">
+          <mxGeometry height="36" width="120" x="800" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-51" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-37" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-3" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="380" y="60" as="sourcePoint" />
+            <mxPoint x="410" y="30" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-52" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-16" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="NBpONYlxt5W741VdVmP8-37" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="370" y="260" as="sourcePoint" />
+            <mxPoint x="420" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-53" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-58">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-54" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFCCCC;" value="Unspecified Intent" vertex="1">
+          <mxGeometry height="36" width="120" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-55" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="NBpONYlxt5W741VdVmP8-60" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-56" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-63">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="428" />
+              <mxPoint x="460" y="494" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-57" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-65">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="428" />
+              <mxPoint x="460" y="564" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-79" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="220" y="377" />
+              <mxPoint x="545" y="377" />
+            </Array>
+            <mxPoint x="219.82" y="394" as="sourcePoint" />
+            <mxPoint x="555" y="307" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-58" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF0000;" value="Uncontrolled Exposure" vertex="1">
+          <mxGeometry height="36" width="120" x="160" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-59" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-67">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-60" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" value="Device Capability Discovery" vertex="1">
+          <mxGeometry height="36" width="120" x="480" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-61" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99CCFF;" value="Offline Storage" vertex="1">
+          <mxGeometry height="36" width="120" x="320" y="476" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-62" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-68">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-63" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" value="Device Capability Pairing" vertex="1">
+          <mxGeometry height="36" width="120" x="480" y="476" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-64" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-70">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-65" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E6FFCC;" value="PDS Credential Recovery" vertex="1">
+          <mxGeometry height="36" width="120" x="480" y="546" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-66" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-73">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-67" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99FF99;" value="PDS Credential Discovery" vertex="1">
+          <mxGeometry height="36" width="120" x="640" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-68" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99FF99;" value="PDS Credential Discovery" vertex="1">
+          <mxGeometry height="36" width="120" x="640" y="476" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-69" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-73">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-70" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99FF99;" value="Device Capability Re-establishment" vertex="1">
+          <mxGeometry height="36" width="120" x="640" y="546" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-71" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-76">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-72" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-77">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint x="859.9999999999995" y="466" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-73" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#00FF00;" value="Private Data Space (PDS)" vertex="1">
+          <mxGeometry height="36" width="120" x="800" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-74" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-75" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-60" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="300" y="428" />
+            </Array>
+            <mxPoint x="220" y="746" as="sourcePoint" />
+            <mxPoint x="300" y="346" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-75" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99CCFF;" value="Actor Software" vertex="1">
+          <mxGeometry height="36" width="120" x="320" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-83" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-76" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-76" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#00FF00;" value="Identity Control Capability" vertex="1">
+          <mxGeometry height="36" width="120" x="960" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-77" parent="NBpONYlxt5W741VdVmP8-299" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#00FF00;" value="Resources" vertex="1">
+          <mxGeometry height="36" width="120" x="800" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-78" edge="1" parent="NBpONYlxt5W741VdVmP8-299" source="NBpONYlxt5W741VdVmP8-75" style="endArrow=classic;startArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="NBpONYlxt5W741VdVmP8-61" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="380" y="406" as="sourcePoint" />
+            <mxPoint x="386" y="486" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-81" edge="1" parent="NBpONYlxt5W741VdVmP8-299" style="endArrow=classic;startArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-16" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="380" y="407" as="sourcePoint" />
+            <mxPoint x="390" y="110" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-304" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="36" width="450" x="360" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-298" parent="NBpONYlxt5W741VdVmP8-304" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF3333;" value="Service Provider" vertex="1">
+          <mxGeometry height="36" width="120" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-300" parent="NBpONYlxt5W741VdVmP8-304" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF3333;" value="Service Provider" vertex="1">
+          <mxGeometry height="36" width="120" x="330" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-302" edge="1" parent="NBpONYlxt5W741VdVmP8-304" source="NBpONYlxt5W741VdVmP8-301" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-298">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-303" edge="1" parent="NBpONYlxt5W741VdVmP8-304" source="NBpONYlxt5W741VdVmP8-301" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="NBpONYlxt5W741VdVmP8-300">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NBpONYlxt5W741VdVmP8-301" parent="NBpONYlxt5W741VdVmP8-304" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#99CCFF;" value="Authorized Exchange" vertex="1">
+          <mxGeometry height="36" width="120" x="165" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
