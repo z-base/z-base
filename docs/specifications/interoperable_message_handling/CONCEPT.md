@@ -48,7 +48,7 @@ Given `frame` as a byte sequence:
 - A Message Frame MUST be at least 2 bytes.
 - `VERSION = frame[0]`
 - `CODE = frame[1]`
-- `PAYLOAD = frame[2..]` (may be empty)
+- `PAYLOAD = frame[2..]` (>1)
 
 ---
 
