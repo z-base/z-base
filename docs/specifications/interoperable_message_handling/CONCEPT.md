@@ -4,24 +4,27 @@
 
 This document specifies **Interoperable Message Handling (IMH)** as a single logical object implemented in any language/runtime.
 
-IMH consumes and produces **Message Frames** (byte sequences) and emits events that application code can register handlers for using an EventTarget-style `addEventListener` model.
+IMH consumes and produces **Message Frames** (byte sequences) and emits events that application code can register handlers for using an EventTarget-style model (or a conforming equivalent event sink).
 
 This specification defines:
-- the Message Frame envelope
-- the IMH object surface (properties and methods)
-- type→code mapping rules (hardcoded within the object)
-- event emission rules for valid and invalid frames
 
-This specification does not define transports, networking, routing policy, authorization, identity, or payload semantics.
+- the Message Frame envelope  
+- the IMH object surface  
+- type → code mapping rules (hardcoded per profile)  
+- event emission rules for valid and invalid frames  
+
+This specification **does not define** transports, networking, routing, identity, authorization, or payload semantics.
+
+RFC 2119 / RFC 8174 keywords apply.
+
+---
 
 ## Terms
 
-- **Message Frame**: the atomic byte unit consumed/produced by IMH.
-- **type**: a string identifier for an operation/event (API-level).
-- **code**: a numeric identifier derived from `type` using `typeMap` (wire-level).
-- **payload**: opaque bytes carried by a Message Frame.
-
-RFC 2119 / RFC 8174 keywords apply.
+- **Message Frame**: the atomic byte unit consumed and produced by IMH.  
+- **type**: a string identifier for an operation/event (API level).  
+- **code**: an 8-bit numeric identifier derived from `type` (wire level).  
+- **payload**: opaque bytes carried by a Message Frame. Payload is **never empty**.
 
 ---
 
@@ -31,24 +34,27 @@ RFC 2119 / RFC 8174 keywords apply.
 
 A Message Frame MUST use the envelope:
 
-```
-
 [ 1 byte VERSION ][ 1 byte CODE ][ N bytes PAYLOAD ]
 
-```
 
-- `VERSION` is an unsigned 8-bit integer.
-- `CODE` is an unsigned 8-bit integer.
-- `PAYLOAD` is an opaque byte sequence of length `N >= 0`.
+Where:
+
+- `VERSION` is an unsigned 8-bit integer.  
+- `CODE` is an unsigned 8-bit integer.  
+- `PAYLOAD` is an opaque byte sequence of length **N >= 1**.
+
+A frame with zero-length payload is **invalid**.
+
+---
 
 ### Parsing rules (normative)
 
 Given `frame` as a byte sequence:
 
-- A Message Frame MUST be at least 2 bytes.
-- `VERSION = frame[0]`
-- `CODE = frame[1]`
-- `PAYLOAD = frame[2..]` (>1)
+- A Message Frame MUST be at least **3 bytes**.  
+- `VERSION = frame[0]`  
+- `CODE = frame[1]`  
+- `PAYLOAD = frame[2..]` (length ≥ 1)
 
 ---
 
@@ -56,31 +62,33 @@ Given `frame` as a byte sequence:
 
 ### Required surface (normative)
 
-An IMH implementation MUST provide a single object `imh` with:
+An IMH implementation MUST expose a single object `imh` with:
 
 - `imh.version: number`  
-  The single supported `VERSION` value (0–255).
+  The single supported `VERSION` value.
 
-- `imh.typeMap: Map<string, number>` (or equivalent)  
-  Hardcoded mapping from `type` strings to `CODE` numbers (0–255).
+- `imh.typeMap: Map<string, number>`  
+  Hardcoded mapping from `type` strings to numeric `CODE`s (0–255).  
+  This map is immutable for the lifetime of the object.
 
 - `imh.consumeMessage(frame: Uint8Array): void`  
   Consumes a Message Frame and emits events.
 
-- `imh.produceMessage(type: string, payload?: Uint8Array): Uint8Array`  
-  Produces a Message Frame for `type` and optional payload bytes.
+- `imh.produceMessage(type: string, payload: Uint8Array): Uint8Array`  
+  Produces a Message Frame.
 
-- `imh.addEventListener(eventType: string, listener: Function, options?): void`
+- `imh.addEventListener(eventType: string, listener: Function, options?): void`  
 - `imh.removeEventListener(eventType: string, listener: Function, options?): void`
 
-The event subscription model MUST be compatible with the EventTarget pattern.
+The event subscription model MUST be compatible with EventTarget semantics or provide a conforming equivalent.
+
+---
 
 ### Hardcoded mapping rules (normative)
 
-- `typeMap` MUST be present on the IMH object and treated as immutable for conformance.
-- `typeMap` MUST define a total mapping for all supported `type` strings in this IMH profile.
-- The inverse mapping (`CODE -> type`) MUST be derivable from `typeMap` and used for decoding.
-- Duplicate CODE assignments MUST NOT exist.
+- `typeMap` MUST define a total mapping for all supported `type` values.  
+- The inverse mapping (`CODE → type`) MUST be derivable and used for decoding.  
+- Duplicate `CODE` values MUST NOT exist.
 
 ---
 
@@ -90,36 +98,40 @@ The event subscription model MUST be compatible with the EventTarget pattern.
 
 `consumeMessage` MUST:
 
-1. Reject non-byte input.
+1. Reject non-byte input.  
 2. Reject frames where `frame.length < 3`.
 
 On rejection, it MUST emit `imh:invalid-frame`.
 
+---
+
 ### Version validation (normative)
 
-If `VERSION != imh.version`, `consumeMessage` MUST emit `imh:invalid-version` and MUST reject the frame.
+If `VERSION !== imh.version`, `consumeMessage` MUST emit  
+`imh:invalid-version` and MUST reject the frame.
 
-### Code/type resolution (normative)
+---
 
-If `CODE` does not map to any `type` (via inverse of `typeMap`), `consumeMessage` MUST emit `imh:unknown-type` and MUST reject the frame.
+### Code / type resolution (normative)
+
+If `CODE` does not resolve to a `type` via the inverse of `typeMap`,  
+`consumeMessage` MUST emit `imh:unknown-type` and MUST reject the frame.
+
+---
 
 ### Event emission (normative)
 
-For a valid frame:
+For a valid frame, IMH MUST emit, in order:
 
-- IMH MUST emit a generic event `imh:message`.
-- IMH MUST emit a second event whose `eventType` equals the resolved `type` string.
-
-Both events MUST include the same `detail` payload:
-
-- `detail.version: number` (the parsed VERSION)
-- `detail.code: number` (the parsed CODE)
-- `detail.type: string` (the resolved type)
-- `detail.payload: Uint8Array` (the payload bytes)
-
-Event order MUST be:
-1) `imh:message`
+1) `imh:message`  
 2) `<type>`
+
+Both events MUST include identical `detail`:
+
+- `detail.version: number`  
+- `detail.code: number`  
+- `detail.type: string`  
+- `detail.payload: Uint8Array`
 
 IMH MUST NOT interpret payload semantics.
 
@@ -129,36 +141,43 @@ IMH MUST NOT interpret payload semantics.
 
 ### Validation (normative)
 
-`produceMessage` MUST:
+`produceMessage` MUST reject if:
 
-- Reject if `type` is not a key in `typeMap`.
-- Reject if `payload` is provided and is not a byte sequence.
+- `type` is not a key in `typeMap`  
+- `payload` is not a byte sequence  
+- `payload.length === 0`
 
-On rejection, the implementation MUST throw or MUST emit `imh:produce-error`. A conforming profile MUST choose exactly one of these behaviors and document it.
+On rejection, the implementation MUST throw or MUST emit  
+`imh:produce-error`. A conforming profile MUST choose exactly one.
+
+---
 
 ### Encoding (normative)
 
 On success:
 
-- `CODE = typeMap[type]`
+- `CODE = typeMap[type]`  
 - The returned frame MUST be:
-  - `[imh.version][CODE][payload...]`
-- Payload bytes MUST be copied or referenced without modification.
+
+[ imh.version ][ CODE ][ payload... ]
+
+
+Payload bytes MUST be copied or referenced without modification.
 
 ---
 
 ## Required events
 
-IMH MUST support these event types:
+IMH MUST support:
 
-- `imh:message` (emitted for every valid consumed frame)
-- `imh:invalid-frame`
-- `imh:invalid-version`
+- `imh:message`  
+- `imh:invalid-frame`  
+- `imh:invalid-version`  
 - `imh:unknown-type`
 
-And MUST support dynamic event types equal to every `type` key in `typeMap`.
+And dynamic event types equal to every `type` key in `typeMap`.
 
-If the profile uses emit-on-error for `produceMessage`, it MUST also support:
+If emit-on-error is chosen for production, it MUST also support:
 
 - `imh:produce-error`
 
@@ -166,12 +185,11 @@ If the profile uses emit-on-error for `produceMessage`, it MUST also support:
 
 ## Conformance
 
-An implementation conforms to this specification iff it:
+An implementation conforms iff it:
 
-- implements the IMH object surface
-- parses Message Frames exactly as specified
-- enforces version equality against `imh.version`
-- resolves `CODE` to `type` using the inverse of `typeMap`
-- emits required events with required `detail`
-- produces frames that follow the Message Frame envelope
-```
+- implements the IMH object surface  
+- enforces non-empty payload frames  
+- validates version strictly  
+- resolves `CODE` via the inverse of `typeMap`  
+- emits required events with required detail  
+- produces frames matching the envelope exactly
