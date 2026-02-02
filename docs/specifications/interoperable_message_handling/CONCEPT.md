@@ -91,7 +91,7 @@ The event subscription model MUST be compatible with the EventTarget pattern.
 `consumeMessage` MUST:
 
 1. Reject non-byte input.
-2. Reject frames where `frame.length < 2`.
+2. Reject frames where `frame.length < 3`.
 
 On rejection, it MUST emit `imh:invalid-frame`.
 
