@@ -1,0 +1,1 @@
+Common schemas as conflict free replicated classes
